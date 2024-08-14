@@ -89,3 +89,25 @@ func TestSendBillFailsWithNegativeAmount(t *testing.T) {
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "invalid charge amount: -1000 (must be above zero)")
 }
+
+func TestSendBillAppliesDiscount(t *testing.T) {
+	testSuite := testsuite.WorkflowTestSuite{}
+	env := testSuite.NewTestActivityEnvironment()
+	env.RegisterActivity(SendBill)
+
+	input := Bill{
+		CustomerID:  12983,
+		OrderNumber: "PI315",
+		Description: "5 large cheese pizzas",
+		Amount:      6500, // amount qualifying for discount
+	}
+
+	future, err := env.ExecuteActivity(SendBill, input)
+	require.NoError(t, err)
+
+	var confirmation OrderConfirmation
+	assert.NoError(t, future.Get(&confirmation))
+
+	assert.Equal(t, "PI315", confirmation.OrderNumber)
+	assert.Equal(t, 6000, confirmation.Amount)
+}

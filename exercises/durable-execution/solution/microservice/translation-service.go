@@ -15,6 +15,7 @@ package main
 //    sk: Slovak
 //    tr: Turkish
 //    zu: Zulu
+//    sw: Swahili
 
 import (
 	"fmt"
@@ -69,6 +70,11 @@ func init() {
 			"hello":   "hamba kahle",
 			"goodbye": "sawubona",
 			"thanks":  "ngiyabonga",
+		},
+		"sw": {
+			"hello":   "Habari",
+			"goodbye": "Kwa heri",
+			"thanks":  "Asante",
 		},
 	}
 }

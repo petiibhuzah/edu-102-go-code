@@ -39,13 +39,13 @@ func SendBill(ctx context.Context, bill Bill) (OrderConfirmation, error) {
 	if bill.Amount > 3000 {
 		logger.Info("Applying discount")
 
-		chargeAmount =- 500 // reduce amount charged by 500 cents
+		chargeAmount -= 500 // reduce amount charged by 500 cents
 	}
 
 	// reject invalid amounts before calling the payment processor
 	if chargeAmount < 0 {
 		return OrderConfirmation{},
-			fmt.Errorf("invalid charge amount: %d (< 1)", chargeAmount)
+			fmt.Errorf("invalid charge amount: %d (must be above zero)", chargeAmount)
 	}
 
 	// pretend we called a payment processing service here :-)
